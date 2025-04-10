@@ -27,9 +27,9 @@ Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, ni
 
 Setul de date este rezultatul procesării datelor colectate în urma unui experiment rulat în Lab. 301 (CISCO Lab), din cadrul UMFST Tg. Mures. Am folosit hping3 pentru a simula 3 tipuri majore de atac DoS:
 
-## 1. TCP Syn Flood - atac care epuizeaza resursele victimei
-## 2. UDP Flood - atac volumetric
-## 3. ICMP Flood - atac volumetric, bazat pe ping
+# 1. TCP Syn Flood - atac care epuizeaza resursele victimei
+# 2. UDP Flood - atac volumetric
+# 3. ICMP Flood - atac volumetric, bazat pe ping
 
 ## Script atac
 
