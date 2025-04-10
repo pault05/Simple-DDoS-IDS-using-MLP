@@ -11,6 +11,7 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 - [Etapele proiectului](#etape)
 - [Functii](#functii)
 - [Screenshots](#screenshots)
+- [Rezultate](#rezultate)
 - [Usage](#usage)
 - [Bibliografie/Referinte](#bibliografiereferinte)
 
@@ -19,9 +20,11 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 ## Despre proiect
 
 Acest proiect implementează un sistem de detecție a atacurilor DDoS folosind o rețea neuronală de tip MLP (Multi-Layer Perceptron). Sistemul este capabil să detecteze pachete de rețea malițioase pe baza unor caracteristici cheie din pachetele care constituie traficul de retea. 
+
 Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detectia unui astfel de atac.
 
---
+
+---
 
 ## Etape
 
@@ -51,6 +54,10 @@ Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, ni
 2. Asigură-te că fișierul Excel are aceleași coloane ca în setul de antrenament.
 3. Rulează aplicația și selectează fișierul .xlsx.
 4. Aplicația va returna 0 (normal) sau 1 (DDoS).
+
+---
+
+## Rezultate
 
 ---
 
