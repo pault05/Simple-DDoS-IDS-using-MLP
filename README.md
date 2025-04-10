@@ -145,6 +145,30 @@ Aplicația conține :
 Ecranul de start al aplicației.
 ![screenshot2](images/ecran-start.png)
 
+Încărcarea datelor și normalizarea lor, dupa funcția de activare aleasă.
+![screenshot3](images/incarcare-normalizare.png)
+
+Procesul de antrenare.
+![screenshot4](images/antrenare.png)
+
+Atenționare, afișată după procesul de testare.
+![screenshot5](images/atentionare.png)
+
+Rezultatele testării.
+![screenshot6](images/rezultate-test.png)
+
+Vizualizare rezultate testare.
+![screenshot7](images/date-test.png)
+
+Cum arată fișierul cu modelul salvat (nr. neuroni intrare, strat ascuns, strat ascuns->ieșire).
+![screenshot8](images/model-salvat.png)
+
+Spikes
+![screenshot9](images/spikes.png)
+
+Consecutive Spikes
+![screenshot10](images/consecutive-spikes.png)
+
 
 ---
 
