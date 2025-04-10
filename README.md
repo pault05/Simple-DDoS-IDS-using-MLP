@@ -1,6 +1,6 @@
 # 🚀 Simple DDoS IDS using MLP
 
-RO: Acest proiect a avut ca scop crearea unei retele neuronale simple (MLP), capabila sa detecteze un posibil atac DDoS. Ulterior, in jurul retelei am construit o aplicatie in C#, similara unui IDS.
+RO: Acest proiect a avut ca scop crearea unei rețele neuronale simple (MLP), capabilă să detecteze un posibil atac DDoS. Ulterior, în jurul rețelei am construit o aplicație în C# .NET, similară unui IDS.
 
 EN: This project aimed to create a simple neural network (MLP), capable of detecting a possible DDoS attack. Subsequently, we built an application in C#, similar to an IDS, around the network. This project aims to show that even a simple model can help us in detecting and mitigaiting these kind of attacks. 
 
@@ -23,7 +23,7 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 
 Acest proiect implementează un sistem de detecție a atacurilor DDoS folosind o rețea neuronală de tip MLP (Multi-Layer Perceptron). Sistemul este capabil să detecteze pachete de rețea malițioase pe baza unor caracteristici cheie din pachetele care constituie traficul de retea. Vom nota cu 1 pachetele (liniile) malitioase, malgine, și cu 0 cele benigne.
 
-Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detectia unui astfel de atac. Astfel, este posibil sa intalnim atat rezultate bune, cat si deficitare (mai ales ca setul de date este creat de la 0).
+Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detecția unui astfel de atac. Astfel, este posibil să întălnim atât rezultate bune, cât și deficitare (mai ales că setul de date este creat de la 0; operăm cu numere mari -> fragmente, overfitting...).
 
 Setul de date este rezultatul procesării datelor colectate în urma unui experiment rulat în Lab. 301 (CISCO Lab), din cadrul UMFST Tg. Mures. Am folosit hping3 pentru a simula 3 tipuri majore de atac DoS:
 
@@ -137,7 +137,6 @@ Aplicația conține :
 - testare pe date fără label
 - output binar 0 (normal) sau 1 (atac DDoS) -> clasificare
 
-  
 ---
 
 ## Screenshots
@@ -147,10 +146,7 @@ Aplicația conține :
 
 ##  Usage
 
-1. Exportă datele de trafic din Wireshark folosind un script Python ce extrage cele 10/6 caracteristici.
-2. Asigură-te că fișierul Excel are aceleași coloane ca în setul de antrenament.
-3. Rulează aplicația și selectează fișierul .xlsx.
-4. Aplicația va returna 0 (normal) sau 1 (DDoS).
+
 
 ---
 
