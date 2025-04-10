@@ -58,16 +58,29 @@ Acest script a fost rulat simultan de restul PC-urilor din rețea.
 Am capturat atăt trafic curat, fără flooding, dar și 3 capturi aferente fiecărui tip de atac. Am utilizat Wireshark și, ulterior, am prelucrat fișierele utilizând scripturi Python (scapy, pandas).
 Cu ajutorul acestora am:
 
-## - extras și etichetat date aferente fiecărui tip de atac
-## - amestecat datele cu trafic curat (pe blocuri de pachete și uniform)
+ - extras și etichetat date aferente fiecărui tip de atac
+ - amestecat datele cu trafic curat (pe blocuri de pachete și uniform)
+
+## Strucutura datelor extrase
+
+1. Syn Flood
+   - ss
+
+3. UDP Flood
+   - ss
+
+4. ICMP Flood
+   -  ss
 
 Am obtinut fișiere Excel care vor servi rețeaua neuronală cu date de antrenament (70%) și de test (30%).
 
 ## Arhitectura rețelei neuronale
 
+- stratul de intrare (cu nr. de neuroni egal cu numărul de coloane - caracteristici - din fișierul .excel)
+- un strat ascuns (funcția de activare Sigmoid sau TanH, la alegere) (nr. de neuroni la alegere)
+- stratul de ieșire (0 sau 1)
 
-
-
+Aplicația trebuie să încarce fișierul .xlsx,
 
 ---
 
