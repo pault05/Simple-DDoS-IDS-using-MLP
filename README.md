@@ -166,9 +166,11 @@ Aplicația conține :
 Rezultatele sunt împărțite după: 
 - tipul / nr. de date oferite
 - aranjarea pachetelor (segmente sau uniforme)
+- parametrii folosiți
 
+Toate fișierele au conținut aproximativ 5000 de pachete.
 
- TOATE COLOANELE / DATELE
+TOATE COLOANELE / DATELE
 
 Parametrii: 
  - 15 neuroni pe stratul ascuns
@@ -176,32 +178,33 @@ Parametrii:
  - rata invatare: 0,005
  - eroare maxima: 0,001
 
-blocuri de cate 50 pachete
--tcp: 36.63 % pachete maligne		
-	sigmoid: 99.73%
-	tanH: 94.25% cu rata: 0,0000005 si eroarea: 0,000001
+Blocuri de cate 50 pachete:
 
--imcp: 25.30% pachete maligne
-	sigmoid: 86.37%
-	tanH: 92.31%
+1. tcp-syn: 36.63 % din pachete sunt maligne
+- sigmoid: 99.73%
+- tanH: 94.25% cu rata: 0,0000005 si eroarea: 0,000001
 
--udp: 53.32% pachete maligne
-	sigmoid: 99.59%
-	tanH: 99.80%
+2. imcp: 25.30% pachete maligne
+- sigmoid: 86.37%
+- tanH: 92.31%
+
+3. udp: 53.32% pachete maligne
+- sigmoid: 99.59%
+- tanH: 99.80%
 
 
-trafic uniform
--tcp: 37.45% pachete maligne
-	sigmoid: 99.66%
-	tanH: 92.65% cu rata 0,0000005 si eroarea: 0,0000001
+Trafic uniform
+1. tcp: 37.45% pachete maligne
+- sigmoid: 99.66%
+- tanH: 92.65% cu rata 0,0000005 si eroarea: 0,0000001
 
--icmp: 24.82% pachete maligne
-	sigmoid: 86.20%
-	tanH: 95.42%
+2. icmp: 24.82% pachete maligne
+- sigmoid: 86.20%
+- tanH: 95.42%
 
--udp: 52.83% pachete maligne
-	sigmoid: 98.65%
-	tanH: 99.46%
+3. udp: 52.83% pachete maligne
+- sigmoid: 98.65%
+- tanH: 99.46%
 
 
 NO IP & MAC
