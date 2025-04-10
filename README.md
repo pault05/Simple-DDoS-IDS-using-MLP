@@ -1,7 +1,8 @@
 # 🚀 Simple DDoS IDS using MLP
 
-A lightweight DDoS Intrusion Detection System based on a Multi-Layer Perceptron (MLP) neural network. The network is trained on the CICIDS 2017 dataset and supports real-time testing via packet data captured and preprocessed externally.
+Acest proiect a avut ca scop crearea unei retele neuronale simple (MLP), capabila sa detecteze un posibil atac DDoS. Ulterior, in jurul retelei am construit o aplicatie in C#, similara unui IDS.
 
+EN: This project aimed to create a simple neural network (MLP), capable of detecting a possible DDoS attack. Subsequently, we built an application in C#, similar to an IDS, around the network.
 ---
 
 ## Cuprins
