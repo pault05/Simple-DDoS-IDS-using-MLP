@@ -63,8 +63,18 @@ Cu ajutorul acestora am:
 
 ## Strucutura datelor extrase
 
-1. Syn Flood
-   - ss
+1. SYN Flood
+   - src_ip : adresă IP sursă
+   - dst_ip : adresă IP destinație
+   - src_port : port sursă
+   - dst_port : port destinație
+   - seq: nr. de secvență (ordine pachete)
+   - ack: acknowledgment rumber (confirmare de primire pachete)
+   - window: mărimea ferestrei în care se pot primi date (pana la un nou ACK)
+   - flags: diverse flag-uri pentru starea conexiunii TCP (ne interesează flag-ul 2 -> SYN)
+   - packet_size: mărimea pachetului
+   - ttl: time to live (câte hop-uri poate traversa un pachet)
+   - label: 1 sau 0
 
 3. UDP Flood
    - ss
