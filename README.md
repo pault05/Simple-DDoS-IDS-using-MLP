@@ -170,82 +170,99 @@ Rezultatele sunt împărțite după:
 
 Toate fișierele au conținut aproximativ 5000 de pachete.
 
+
 TOATE COLOANELE / DATELE
 
 Parametrii: 
  - 15 neuroni pe stratul ascuns
  - 300 epoci
- - rata invatare: 0,005
- - eroare maxima: 0,001
+ - rata învățare: 0,005
+ - eroare maximă: 0,001
 
-Blocuri de cate 50 pachete:
-
+Blocuri de câte 50 pachete:
 1. tcp-syn: 36.63 % din pachete sunt maligne
 - sigmoid: 99.73%
 - tanH: 94.25% cu rata: 0,0000005 si eroarea: 0,000001
 
-2. imcp: 25.30% pachete maligne
+2. imcp: 25.30% din pachete sunt maligne
 - sigmoid: 86.37%
 - tanH: 92.31%
 
-3. udp: 53.32% pachete maligne
+3. udp: 53.32% din pachete sunt maligne
 - sigmoid: 99.59%
 - tanH: 99.80%
 
 
-Trafic uniform
-1. tcp: 37.45% pachete maligne
+Trafic uniform:
+1. tcp-syn: 37.45% din pachete sunt maligne
 - sigmoid: 99.66%
 - tanH: 92.65% cu rata 0,0000005 si eroarea: 0,0000001
 
-2. icmp: 24.82% pachete maligne
+2. icmp: 24.82% dn pachete sunt maligne
 - sigmoid: 86.20%
 - tanH: 95.42%
 
-3. udp: 52.83% pachete maligne
+3. udp: 52.83% din pachete sunt maligne
 - sigmoid: 98.65%
 - tanH: 99.46%
 
 
 NO IP & MAC
 
-parametrii: 
--10 neuroni pe stratul ascuns
--200 epoci
--rata invatare: 0,005
--eroare maxima: 0,001
+Parametrii: 
+- 10 neuroni pe stratul ascuns
+- 200 epoci
+- rata învățare: 0,005
+- eroare maximă: 0,001
 
-blocuri de cate 50 pachete
--tcp: 36.63 % pachete maligne		
-	sigmoid: 99.73%
-	tanH: 99.86% cu rata: 0,000005 si eroarea: 0,000001
+Blocuri de câte 50 pachete
+1. tcp-syn: 36.63 % din pachete sunt maligne		
+- sigmoid: 99.73%
+- tanH: 99.86% cu rata: 0,000005 si eroarea: 0,000001
 
--imcp: 25.30% pachete maligne
-	sigmoid: 73.68%
-	tanH: 89.07%
+2. imcp: 25.30% din pachete sunt maligne
+- sigmoid: 73.68%
+- tanH: 89.07%
 
--udp: 53.32% pachete maligne
-	sigmoid: 79.14%
-	tanH: 98.85%
+3. udp: 53.32% din pachete sunt maligne
+- sigmoid: 79.14%
+- tanH: 98.85%
 
 
-trafic uniform
--tcp: 37.45% pachete maligne
-	sigmoid: 99.66%
-	tanH: 90.38% cu rata: 0,0000005 si eroarea: 0,0000001
+Trafic uniform
+1. tcp-syn: 37.45% din pachete sunt maligne
+- sigmoid: 99.66%
+- tanH: 90.38% cu rata: 0,0000005 si eroarea: 0,0000001
 
--icmp: 24.82% pachete maligne
-	sigmoid: 75.08% 
-	tanH: 95.49%
+2. icmp: 24.82% din pachete sunt maligne
+- sigmoid: 75.08% 
+- tanH: 95.49%
 
--udp: 52.83% pachete maligne
-	sigmoid: 80.00%
-	tanH: 97.98%
+3. udp: 52.83% din pachete sunt maligne
+- sigmoid: 80.00%
+- tanH: 97.98%
+
+
+În general, am obținut rezultate satisfăcătoare, având în vedere arhitectura simplă a rețelei, dar și structura datelor.
+Observăm și câteva probleme:
+-  în cazul funcției TanH, pentru detecția SYN Flood, avem nevoie de parametrii foarte mici
+-  în unele configurații, am obținut acuratețe de 100.00%, dar testarea nu avea rezultatele așteptate
+-  în unele cazuri, la testarea reală, am obținut doar label-uri de 1 -> overfitting
 
 ---
 
 ### Viitor
 
+Principala direcție de viitor a proiectului este extinderea și eficientizarea acestuia, în cadrul studiilor de masterat, prin:
+
+1. îmbunătățirea rețelei neuronale -> alți algoritmi, biblioteci predefinite (pandas, ML, scikit, jupyter, etc.)
+2. mai mulți parametrii pentru pachete / trafic
+3. detectare atac în timp real -> colectare date din NIC
+4. interfață mai bună
+5. firewall -> blocare IP / MAC / PORT cu trafic malign
+6. extinderea aplicației într-o soluție dedicată și funcțională -> un IDS cu mai multe funcționalități
+7. server dedicat unde putem vizualiza situația unei scanări, stocare raport, etc.
+8. multi-platformă: desktop, mobile, web
 
 ---
 
