@@ -1,4 +1,4 @@
-# 🚀 Simple DDoS IDS using MLP
+#  Simple DDoS IDS using MLP
 
 RO: Acest proiect a avut ca scop crearea unei rețele neuronale simple (MLP), capabilă să detecteze un posibil atac DDoS. Ulterior, în jurul rețelei am construit o aplicație în C# .NET, similară unui IDS.
 
