@@ -11,8 +11,8 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 - [Etapele proiectului](#etape)
 - [Functii](#functii)
 - [Screenshots](#screenshots)
-- [Rezultate](#rezultate)
 - [Usage](#usage)
+- [Rezultate](#rezultate)
 - [Bibliografie/Referinte](#bibliografiereferinte)
 
 ---
@@ -27,6 +27,10 @@ Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, ni
 ---
 
 ## Etape
+
+## 1.
+
+## 2. 
 
 ---
 
