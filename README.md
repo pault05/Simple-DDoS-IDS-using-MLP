@@ -11,8 +11,6 @@ A lightweight DDoS Intrusion Detection System based on a Multi-Layer Perceptron 
 - [Screenshots](#screenshots)
 - [Usage](#usage)
 - [Bibliografie/Referinte](#bibliografiereferinte)
-- [Contact](#contact)
-- [Licenta](#licenta)
 
 ---
 
@@ -52,4 +50,21 @@ Scopul este oferirea unei soluții simple și rapide pentru identificarea atacur
 ---
 
 ## Bibliografie/Referinte
+
+Network Intrusion Detection System Using Anomaly Detection Techniques,
+David Oroian, Roland Bolboaca, Virgil Dobrota, Adrian-Silviu Roman
+
+https://ieeexplore.ieee.org/document/9282658/figures#figures
+
+https://ieeexplore.ieee.org/document/9726747
+
+https://www.kaggle.com/datasets/devendra416/ddos-datasets
+
+https://www.unb.ca/cic/datasets/ids-2017.html
+
+https://github.com/noushinpervez/Intrusion-Detection-CICIDS2017
+
+https://github.com/steviegoneevil/ANN-for-DDoS-detection
+
+https://github.com/ReubenJoe/DDoS-Detection
 
