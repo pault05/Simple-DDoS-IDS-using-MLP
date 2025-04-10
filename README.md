@@ -63,7 +63,7 @@ Cu ajutorul acestora am:
 
 ## Strucutura datelor extrase
 
-1. SYN Flood
+1. TCP - SYN Flood
    - src_ip : adresă IP sursă
    - dst_ip : adresă IP destinație
    - src_port : port sursă
@@ -77,10 +77,26 @@ Cu ajutorul acestora am:
    - label: 1 sau 0
 
 3. UDP Flood
-   - ss
+   - src_ip : adresă IP sursă
+   - dst_ip : adresă IP destinație
+   - src_port : port sursă
+   - dst_port : port destinație
+   - packet_size: mărimea pachetului
+   - ttl: time to live (câte hop-uri poate traversa un pachet)
+   - label: 1 sau 0
 
 4. ICMP Flood
-   -  ss
+   - src_ip : adresă IP sursă
+   - dst_ip : adresă IP destinație
+   - packet_size: mărimea pachetului
+   - ttl: time to live (câte hop-uri poate traversa un pachet)
+   - ip_flags: flag pentru header-ul IP (DF sau MF)
+   - fragment_offset: aparține sau nu pachetului original
+   - ip_header_length: mărimea header-ului IP
+   - ip_checksum: posibile pachete malformate
+   - src_mac: adresă MAC sursă
+   - dst_mac: adresă MAC destinație
+   - label: 1 sau 0
 
 Am obtinut fișiere Excel care vor servi rețeaua neuronală cu date de antrenament (70%) și de test (30%).
 
@@ -90,25 +106,38 @@ Am obtinut fișiere Excel care vor servi rețeaua neuronală cu date de antrenam
 - un strat ascuns (funcția de activare Sigmoid sau TanH, la alegere) (nr. de neuroni la alegere)
 - stratul de ieșire (0 sau 1)
 
-Aplicația trebuie să încarce fișierul .xlsx,
-
+Aplicația conține :
+- clasa Neuron
+- clasa Neural_Network
+- clasa principală, unde am definit restul funcțiilor, metodelor, grafice, visuals, etc.
+  
 ---
 
 ## Etape
-
-## 1.
-
-## 2. 
+1. Am stabilit ce fel de atac dorim să detectăm -> DDoS.
+2. Am stabilit tipurile de DoS (TCP-SYN, UDP, ICMP)
+3. Am stabilit parametrii experimentului (hping3, topologie, etc.) și am colectat datele (Wireshark).
+4. Am prelucrat datele -> scripturi Python -> am obținut fișiere Excel cu date și label-uri.
+5. Am stabilit arhitectura rețelei (simplă, orientată spre eficiență și demonstrație).
+6. Am creat rețeaua neuronală, elementele vizuale, funcționalități, grafice.
+7. Am antrenat și testat aplicația / rețeaua neuronală.
+8. Am colectat datele.
 
 ---
 
 ##  Functii
 
-- ✅ Detectarea traficului DDoS pe baza caracteristicilor de rețea
-- 📄 Suport pentru fișiere .xlsx ca input
-- 🔎 Analiză batch și testare în timp real (cu pachete preprocesate)
-- 📊 Returnează eticheta 0 (normal) sau 1 (atac DDoS)
+- detectarea traficului DDoS pe baza caracteristicilor de rețea / pe baza pachetelor 
+- suport pentru fișiere .xlsx ca input
+- posibilitate de alegere a parametriilor (nr. neuroni strat ascuns, nr. epoci, eroare maximă, rata de învățare)
+- feedback asupra procesului de antrenare (per epocă)
+- confusion matrix și grafic pentru observarea tiparului de atac (liniar, spike)
+- atenționare în cazul detecției mai multor spike-uri (mai multe pachete maligne într-un segment de trafic)
+- posibilitate de salvare și încărcare ulterioară a modelului
+- testare pe date fără label
+- output binar 0 (normal) sau 1 (atac DDoS) -> clasificare
 
+  
 ---
 
 ## Screenshots
