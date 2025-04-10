@@ -142,6 +142,9 @@ Aplicația conține :
 
 ## Screenshots
 
+Ecranul de start al aplicației.
+![screenshot2](images/ecran-start.png)
+
 
 ---
 
