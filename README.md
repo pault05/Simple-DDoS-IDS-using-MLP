@@ -27,9 +27,9 @@ Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, ni
 
 Setul de date este rezultatul procesării datelor colectate în urma unui experiment rulat în Lab. 301 (CISCO Lab), din cadrul UMFST Tg. Mures. Am folosit hping3 pentru a simula 3 tipuri majore de atac DoS:
 
-# 1. TCP Syn Flood - atac care epuizeaza resursele victimei
-# 2. UDP Flood - atac volumetric
-# 3. ICMP Flood - atac volumetric, bazat pe ping
+ 1. TCP Syn Flood - atac care epuizeaza resursele victimei
+ 2. UDP Flood - atac volumetric
+ 3. ICMP Flood - atac volumetric, bazat pe ping
 
 ## Script atac
 
@@ -53,9 +53,9 @@ Acest script a fost rulat simultan de restul PC-urilor din rețea.
 
 ![screenshot1](images/A-301-victim.png)
 
-Tinta atacului este PC-ul cu adresa IP: 192.168.0.201.
+Ținta atacului este PC-ul cu adresa IP: 192.168.0.201.
 
-Am capturat atat trafic curat, fara flooding, dar si 3 capturi aferente fiecarui tip de atac. Am utilizat Wireshark și, ulterior, am prelucrat fisierele utilizand scripturi Python (scapy, pandas).
+Am capturat atăt trafic curat, fără flooding, dar și 3 capturi aferente fiecărui tip de atac. Am utilizat Wireshark și, ulterior, am prelucrat fișierele utilizând scripturi Python (scapy, pandas).
 Cu ajutorul acestora am:
 
 ## - extras și etichetat date aferente fiecărui tip de atac
