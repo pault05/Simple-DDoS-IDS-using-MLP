@@ -1,13 +1,14 @@
 # 🚀 Simple DDoS IDS using MLP
 
-Acest proiect a avut ca scop crearea unei retele neuronale simple (MLP), capabila sa detecteze un posibil atac DDoS. Ulterior, in jurul retelei am construit o aplicatie in C#, similara unui IDS.
+RO: Acest proiect a avut ca scop crearea unei retele neuronale simple (MLP), capabila sa detecteze un posibil atac DDoS. Ulterior, in jurul retelei am construit o aplicatie in C#, similara unui IDS.
 
-EN: This project aimed to create a simple neural network (MLP), capable of detecting a possible DDoS attack. Subsequently, we built an application in C#, similar to an IDS, around the network.
+EN: This project aimed to create a simple neural network (MLP), capable of detecting a possible DDoS attack. Subsequently, we built an application in C#, similar to an IDS, around the network. This project aims to show that even a simple model can help us in detecting and mitigaiting these kind of attacks. 
 ---
 
 ## Cuprins
 
 - [Despre proiect](#despre-proiect)
+- [Etapele proiectului](#etape)
 - [Functii](#functii)
 - [Screenshots](#screenshots)
 - [Usage](#usage)
@@ -17,9 +18,12 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 
 ## Despre proiect
 
-Acest proiect implementează un sistem de detecție a atacurilor DDoS folosind o rețea neuronală de tip MLP (Multi-Layer Perceptron). Sistemul este capabil să detecteze pachete de rețea malițioase pe baza a 18 caracteristici extrase din trafic, fiind antrenat pe datasetul CICIDS 2017 și compatibil cu APA-DDoS.
+Acest proiect implementează un sistem de detecție a atacurilor DDoS folosind o rețea neuronală de tip MLP (Multi-Layer Perceptron). Sistemul este capabil să detecteze pachete de rețea malițioase pe baza unor caracteristici cheie din pachetele care constituie traficul de retea. 
+Atentie! Aceasta aplicatie nu este menita sa simuleze un IDS functional 100%, nici o retea neuronala sofisticata. Am vrut sa vedem care este minimul necesar d.p.d.v. software (resurse, arhitectura) pentru detectia unui astfel de atac.
 
-Scopul este oferirea unei soluții simple și rapide pentru identificarea atacurilor DDoS în rețele de calculatoare.
+--
+
+## Etape
 
 ---
 
