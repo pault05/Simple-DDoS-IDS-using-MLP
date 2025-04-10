@@ -133,6 +133,7 @@ Aplicația conține :
 - feedback asupra procesului de antrenare (per epocă)
 - confusion matrix și grafic pentru observarea tiparului de atac (liniar, spike)
 - atenționare în cazul detecției mai multor spike-uri (mai multe pachete maligne într-un segment de trafic)
+- funcție de logging -> fișiere .txt cu detalii despre atac / pachete.
 - posibilitate de salvare și încărcare ulterioară a modelului
 - testare pe date fără label
 - output binar 0 (normal) sau 1 (atac DDoS) -> clasificare
@@ -146,11 +147,97 @@ Aplicația conține :
 
 ##  Usage
 
-
+1. Colectăm trafic de rețea cu Wireshark.
+2. Prelucrăm fișierul .pcap cu scriptul aferent din Python (în funcție de ce atac vrem să detectăm).
+3. Încărcăm fișierul în aplicație. Atentie! Numărul de neuroni din startul de intrare trebuie să fie egal cu nr. de coloane din excel - 1 (coloana de label) -> setare din cod.
+4. Alegem funcția de activare.
+5. Normalizăm datele.
+6. Setăm parametrii.
+7. Antrenăm rețeaua.
+8. Testăm.
+9. Vizualizăm rezultatele / fișierele de logging.
+10. Salvăm rețeaua.
+11. Testăm cu date reale.
 
 ---
 
 ## Rezultate
+
+Rezultatele sunt împărțite după: 
+- tipul / nr. de date oferite
+- aranjarea pachetelor (segmente sau uniforme)
+
+
+# TOATE COLOANELE / DATELE
+
+parametrii: 
+-15 neuroni pe stratul ascuns
+-300 epoci
+-rata invatare: 0,005
+-eroare maxima: 0,001
+
+blocuri de cate 50 pachete
+-tcp: 36.63 % pachete maligne		
+	sigmoid: 99.73%
+	tanH: 94.25% cu rata: 0,0000005 si eroarea: 0,000001
+
+-imcp: 25.30% pachete maligne
+	sigmoid: 86.37%
+	tanH: 92.31%
+
+-udp: 53.32% pachete maligne
+	sigmoid: 99.59%
+	tanH: 99.80%
+
+
+trafic uniform
+-tcp: 37.45% pachete maligne
+	sigmoid: 99.66%
+	tanH: 92.65% cu rata 0,0000005 si eroarea: 0,0000001
+
+-icmp: 24.82% pachete maligne
+	sigmoid: 86.20%
+	tanH: 95.42%
+
+-udp: 52.83% pachete maligne
+	sigmoid: 98.65%
+	tanH: 99.46%
+
+
+NO IP & MAC
+
+parametrii: 
+-10 neuroni pe stratul ascuns
+-200 epoci
+-rata invatare: 0,005
+-eroare maxima: 0,001
+
+blocuri de cate 50 pachete
+-tcp: 36.63 % pachete maligne		
+	sigmoid: 99.73%
+	tanH: 99.86% cu rata: 0,000005 si eroarea: 0,000001
+
+-imcp: 25.30% pachete maligne
+	sigmoid: 73.68%
+	tanH: 89.07%
+
+-udp: 53.32% pachete maligne
+	sigmoid: 79.14%
+	tanH: 98.85%
+
+
+trafic uniform
+-tcp: 37.45% pachete maligne
+	sigmoid: 99.66%
+	tanH: 90.38% cu rata: 0,0000005 si eroarea: 0,0000001
+
+-icmp: 24.82% pachete maligne
+	sigmoid: 75.08% 
+	tanH: 95.49%
+
+-udp: 52.83% pachete maligne
+	sigmoid: 80.00%
+	tanH: 97.98%
 
 ---
 
