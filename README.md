@@ -3,6 +3,7 @@
 RO: Acest proiect a avut ca scop crearea unei retele neuronale simple (MLP), capabila sa detecteze un posibil atac DDoS. Ulterior, in jurul retelei am construit o aplicatie in C#, similara unui IDS.
 
 EN: This project aimed to create a simple neural network (MLP), capable of detecting a possible DDoS attack. Subsequently, we built an application in C#, similar to an IDS, around the network. This project aims to show that even a simple model can help us in detecting and mitigaiting these kind of attacks. 
+
 ---
 
 ## Cuprins
@@ -13,6 +14,7 @@ EN: This project aimed to create a simple neural network (MLP), capable of detec
 - [Screenshots](#screenshots)
 - [Usage](#usage)
 - [Rezultate](#rezultate)
+- [Viitor](#viitor)
 - [Bibliografie/Referinte](#bibliografiereferinte)
 
 ---
@@ -45,10 +47,27 @@ hping3 -S -p 80 --flood 192.168.0.201
  
 hping3 --udp --flood --rand-source -p 53 192.168.0.201
 
+Acest script a fost rulat simultan de restul PC-urilor din rețea.
 
 ## Topologia retelei 
 
 ![screenshot1](images/A-301-victim.png)
+
+Tinta atacului este PC-ul cu adresa IP: 192.168.0.201.
+
+Am capturat atat trafic curat, fara flooding, dar si 3 capturi aferente fiecarui tip de atac. Am utilizat Wireshark și, ulterior, am prelucrat fisierele utilizand scripturi Python (scapy, pandas).
+Cu ajutorul acestora am:
+
+## - extras și etichetat date aferente fiecărui tip de atac
+## - amestecat datele cu trafic curat (pe blocuri de pachete și uniform)
+
+Am obtinut fișiere Excel care vor servi rețeaua neuronală cu date de antrenament (70%) și de test (30%).
+
+## Arhitectura rețelei neuronale
+
+
+
+
 
 ---
 
@@ -71,10 +90,6 @@ hping3 --udp --flood --rand-source -p 53 192.168.0.201
 
 ## Screenshots
 
-| Interfață | Descriere |
-|-----------|----------|
-| ![screenshot1](images/gui_example.png) | ex1 |
-| ![screenshot2](images/result_example.png) | ex 2|
 
 ---
 
@@ -88,6 +103,11 @@ hping3 --udp --flood --rand-source -p 53 192.168.0.201
 ---
 
 ## Rezultate
+
+---
+
+### Viitor
+
 
 ---
 
