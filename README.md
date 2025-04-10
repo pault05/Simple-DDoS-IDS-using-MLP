@@ -168,13 +168,13 @@ Rezultatele sunt împărțite după:
 - aranjarea pachetelor (segmente sau uniforme)
 
 
-# TOATE COLOANELE / DATELE
+ TOATE COLOANELE / DATELE
 
-parametrii: 
--15 neuroni pe stratul ascuns
--300 epoci
--rata invatare: 0,005
--eroare maxima: 0,001
+Parametrii: 
+ - 15 neuroni pe stratul ascuns
+ - 300 epoci
+ - rata invatare: 0,005
+ - eroare maxima: 0,001
 
 blocuri de cate 50 pachete
 -tcp: 36.63 % pachete maligne		
