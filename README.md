@@ -160,6 +160,9 @@ Rezultatele testării.
 Vizualizare rezultate testare.
 ![screenshot7](images/date-test.png)
 
+Vizualizare rezultate, atac pe blocuri / spikes.
+![screenshot11](images/rezultate-block.png)
+
 Cum arată fișierul cu modelul salvat (nr. neuroni intrare, strat ascuns, strat ascuns->ieșire).
 ![screenshot8](images/model-salvat.png)
 
