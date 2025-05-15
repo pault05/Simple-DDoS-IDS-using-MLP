@@ -623,89 +623,101 @@ namespace DDoS_IDS
             return data_blocks;
         }
 
+        //functie de analiza a anomaliilor din datele testate / spike detection
+private void Spike_Analysis(int block_Size, double spike_Threshold, int consecutive_Spike_Limit, double spike_ratio_Threshold = 0.5)
+{
 
-        //functie de detectie spike (concentrare mai mare de randuri ddos)
-        private void Detect_Spikes(int block_Size, double spike_Threshold)
+    // verificare date de intrare
+    var data_Blocks = Segment_Data(block_Size);
+    int total_Blocks = data_Blocks.Count;
+    int spike_Blocks = 0;
+    int consecutive_Spikes = 0;
+    bool sustained_Attack_Detected = false;
+
+    // timestamp pentru logging
+    string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+    string log_FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"Advanced_Spike_Analysis_{timestamp}.txt");
+
+    using (StreamWriter log = new StreamWriter(log_FilePath))
+    {
+        log.WriteLine($"[Advanced Spike Detection Log - {DateTime.Now}]");
+        log.WriteLine($"Block size: {block_Size} \n Spike threshold: {spike_Threshold} \n Consecutive limit: {consecutive_Spike_Limit} \n Overall ratio threshold: {spike_ratio_Threshold}");
+        log.WriteLine("------------------------------------------------------");
+
+        // analiza blocurilor de date
+        for (int i = 0; i < total_Blocks; i++)
         {
-            // log file 
-            string log_File_Name = $"Scan Spikes- {DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
-            string log_File_Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), log_File_Name);
+            double[] block = data_Blocks[i];
+            int ddos_Count = block.Count(label => label == 1);
+            double ddos_Ratio = (double)ddos_Count / block_Size;
 
-            var data_Blocks = Segment_Data(block_Size);
-            bool spikes_Detected = false;
-
-            using (StreamWriter logFile = new StreamWriter(log_File_Path, true))
+            string status;
+            if (ddos_Ratio > spike_Threshold)
             {
-                for (int blockIndex = 0; blockIndex < data_Blocks.Count; blockIndex++)
+                spike_Blocks++;
+
+                consecutive_Spikes++;
+
+                status = $"Spike ⚠️ - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                if (consecutive_Spikes >= consecutive_Spike_Limit)
                 {
-                    int ddos_Count = data_Blocks[blockIndex].Count(label => label == 1);
-                    double ddos_Ratio = (double)ddos_Count / block_Size;
+                    sustained_Attack_Detected = true;
+                    log.WriteLine($"[Block {i + 1}] {status} → Sustained Attack Detected! (Consecutive spikes = {consecutive_Spikes})");
 
-                    if (ddos_Ratio > spike_Threshold)
-                    {
-                        spikes_Detected = true;
-                        logFile.WriteLine($"[{DateTime.Now}] Spike detected in Block {blockIndex + 1}: {ddos_Count}/{block_Size} rows are DDoS.");
-                    }
+                    break;
                 }
-            }
-
-            if (spikes_Detected)
-            {
-                MessageBox.Show("Spike detected in the dataset! Check the log file for details.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                MessageBox.Show("No spikes detected in the dataset.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                status = $"Normal - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                consecutive_Spikes = 0;
             }
+
+            log.WriteLine($"[Block {i + 1}] {status}");
         }
 
+        double spike_Ratio = (double)spike_Blocks / total_Blocks;
+        double severity_Score = spike_Ratio * 100;   //procent pentru severitatea testului
 
-        //functie de detectie spike consecutiv (atac ddos?)
-        private void Detect_Consecutive_Spikes(int block_Size, double spike_Threshold, int consecutive_SpikeLimit)
+        //caracteristici de logging
+        log.WriteLine("------------------------------------------------------");
+        log.WriteLine($"Total Blocks: {total_Blocks}");
+        log.WriteLine($"Spike Blocks: {spike_Blocks}");
+        log.WriteLine($"Spike Ratio: {spike_Ratio:F2}");
+        log.WriteLine($"Severity Score: {severity_Score:F1}/100");
+
+        if (!sustained_Attack_Detected && spike_Ratio >= spike_ratio_Threshold)
         {
-            //log file 
-            string logFileName = $"Scan Consecutive Spikes - {DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
-            string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), logFileName);
+            log.WriteLine("[RESULT] Frequent spikes detected across dataset. DDoS is highly probable.");
 
-            var dataBlocks = Segment_Data(block_Size);
-            int consecutive_Spikes = 0;
-            bool sustained_AttackDetected = false;
-
-            using (StreamWriter logFile = new StreamWriter(logFilePath, true))
-            {
-                for (int blockIndex = 0; blockIndex < dataBlocks.Count; blockIndex++)
-                {
-                    int ddos_Count = dataBlocks[blockIndex].Count(label => label == 1);
-                    double ddos_Ratio = (double)ddos_Count / block_Size;
-
-                    if (ddos_Ratio > spike_Threshold)
-                    {
-                        consecutive_Spikes++;
-                        logFile.WriteLine($"[{DateTime.Now}] Spike detected in block {blockIndex + 1}. Consecutive spikes: {consecutive_Spikes}");
-
-                        if (consecutive_Spikes >= consecutive_SpikeLimit)
-                        {
-                            logFile.WriteLine($"[{DateTime.Now}] Sustained attack detected! Consecutive spike limit reached!");
-                            sustained_AttackDetected = true;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        consecutive_Spikes = 0; // reset
-                    }
-                }
-            }
-
-            if (sustained_AttackDetected)
-            {
-                MessageBox.Show("Sustained attack detected in the dataset! Check the log file for details.", "Consecutive Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                MessageBox.Show("No consecutive spikes detected in the dataset.", "Consecutive Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            sustained_Attack_Detected = true;
         }
+        else if (!sustained_Attack_Detected && spike_Blocks > 0)
+        {
+            log.WriteLine("[RESULT] Some spikes detected, but not frequent or sustained enough.");
+        }
+        else if (spike_Blocks == 0)
+        {
+            log.WriteLine("[RESULT] No spikes detected.");
+        }
+    }
+
+    // feedback in UI
+    if (sustained_Attack_Detected)
+    {
+        MessageBox.Show("DDoS attack detected! See detailed analysis in log file.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+    else if (spike_Blocks > 0)
+    {
+        MessageBox.Show("Some anomalies detected. DDoS not confirmed. See log for details.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+    else
+    {
+        MessageBox.Show("No anomalies or spikes detected.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+}
+      
 
         //functia de testare retea neuronala, dupa antrenare
         private void Test_Data()
@@ -771,13 +783,12 @@ namespace DDoS_IDS
                     double accuracy = (double)correct_Predictions / total_Predictions * 100;
 
 
-                    // setari pentru detectie spike, atac continuu
-                    int block_Size = 25;
-                    double spike_Threshold = 0.5;
-                    int consecutive_Spike_Limit = 7;
+                      // setari pentru detectie spike, atac continuu, anomalii
+                     int block_Size = 25;
+                     double spike_Threshold = 0.2;
+                     int consecutive_Spike_Limit = 5;
 
-                    Detect_Spikes(block_Size, spike_Threshold);
-                    Detect_Consecutive_Spikes(block_Size, spike_Threshold, consecutive_Spike_Limit);
+                     Spike_Analysis(block_Size, spike_Threshold, consecutive_Spike_Limit, 0.5);
 
                     dataGridView_data.Refresh();
 
