@@ -10,7 +10,7 @@ using OxyPlot.Annotations;
 
 namespace DDoS_IDS
 {
-    public partial class Form1 : Form
+    public partial class Main_Form : Form
     {
         DataTable dt;
         DataTable dt_real;
@@ -28,7 +28,7 @@ namespace DDoS_IDS
         double max_Error = 0.01;
         double learning_Rate = 0.05;
 
-        public Form1()
+        public Main_Form()
         {
             InitializeComponent();
 
