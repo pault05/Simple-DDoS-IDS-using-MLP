@@ -604,19 +604,20 @@ namespace DDoS_IDS
         // functie de segmentare blocuri; necesara pt spike detection
         private List<double[]> Segment_Data(int block_Size)
         {
-            List<double[]> data_blocks = new List<double[]>();
+        List<double[]> data_blocks = new List<double[]>();
 
-            for (int i = 0; i < dataSet_test.GetLength(0); i += block_Size)
+        for (int i = 0; i < test_Results.Count; i += block_Size)
             {
-                int current_block_size = Math.Min(block_Size, dataSet_test.GetLength(0) - i);
-                double[] block = new double[current_block_size];
+        int current_block_size = Math.Min(block_Size, test_Results.Count - i);
+        double[] block = new double[current_block_size];
 
-                for (int j = 0; j < current_block_size; j++)
-                {
-                    block[j] = dataSet_test[i + j, dataSet_test.GetLength(1) - 1]; //label 
-                }
+        for (int j = 0; j < current_block_size; j++)
+            {
+            int predicted_Label = test_Results[i + j] >= (radioButton_sigmoid.Checked ? 0.5 : 0.0) ? 1 : 0;
+            block[j] = predicted_Label;
+            }
 
-                data_blocks.Add(block);
+            data_blocks.Add(block);
             }
 
             return data_blocks;
