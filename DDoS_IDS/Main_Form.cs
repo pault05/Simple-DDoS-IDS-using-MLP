@@ -20,7 +20,10 @@ namespace DDoS_IDS
         int train_Rows, test_Rows;
 
         public List<double> epoch_errors { get; private set; } = new List<double>();
-        private List<double> test_Results = new List<double>();
+        private List<double> test_Results = new List<double>(); //testare retea neuronala
+        private List<double> real_test_Results = new List<double>(); // testare retea neuronala pe date reale
+
+        private Dictionary<int, (double min, double max)> norm_Min_Max_values = new Dictionary<int, (double min, double max)>(); // pentru persistenta 
 
         Neural_Network network;   //reteaua in sine (obiect)
         int hidden_Layer_Neurons = 15;
@@ -168,67 +171,56 @@ namespace DDoS_IDS
 
         //functie de normalizare date de ANTRENARE, in functie de radio_button
         private void Data_Normalization_Train()
-        {
-            int rows = dataSet_train.GetLength(0);
-            int cols = dataSet_train.GetLength(1);
+ {
+     int rows = dataSet_train.GetLength(0);
+     int cols = dataSet_train.GetLength(1);
 
-            Dictionary<int, (double min, double max)> minMaxValues = new Dictionary<int, (double min, double max)>();
+     norm_Min_Max_values.Clear();  // Clear any old values
 
-            for (int col = 0; col < cols; col++)
-            {
-                double min = double.MaxValue;
-                double max = double.MinValue;
+     for (int col = 0; col < cols; col++)
+     {
+         double min = double.MaxValue;
+         double max = double.MinValue;
 
-                for (int row = 0; row < rows; row++)         //cautare pe coloane, apoi pe randuri de maxime & minime
-                {
-                    double value = dataSet_train[row, col];
-                    if (value < min) min = value;
-                    if (value > max) max = value;
-                }
+         for (int row = 0; row < rows; row++)
+         {
+             double value = dataSet_train[row, col];
+             if (value < min) min = value;
+             if (value > max) max = value;
+         }
 
-                minMaxValues[col] = (min, max);
-            }
+         norm_Min_Max_values[col] = (min, max);
+     }
 
+     for (int row = 0; row < rows; row++)
+     {
+         for (int col = 0; col < cols; col++)
+         {
+             double value = dataSet_train[row, col];
+             double min = norm_Min_Max_values[col].min;
+             double max = norm_Min_Max_values[col].max;
 
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    double value = dataSet_train[row, col];
-                    double min = minMaxValues[col].min;
-                    double max = minMaxValues[col].max;
+             if (max != min)
+             {
+                 double normalizedValue = radioButton_sigmoid.Checked
+                     ? (value - min) / (max - min)
+                     : 2 * ((value - min) / (max - min)) - 1;
 
-                    if (max != min)
-                    {
-                        double normalized_Value;
+                 dataSet_train[row, col] = normalizedValue;
+                 dt.Rows[row][col] = normalizedValue.ToString("F6");
+             }
+         }
+     }
 
-                        if (radioButton_sigmoid.Checked == true)
-                        {
-
-                            normalized_Value = (value - min) / (max - min);  //0 1  => sigmoid
-                        }
-                        else
-                        {
-
-                            normalized_Value = 2 * ((value - min) / (max - min)) - 1; // -1 1  => tanH; aducem din intervalul [0,1] in [-1,1]
-                        }
-
-
-                        dataSet_train[row, col] = normalized_Value;
-                        dt.Rows[row][col] = normalized_Value.ToString("F6");
-                    }
-                }
-            }
-
-            if (dataGridView_data.InvokeRequired)
-            {
-                dataGridView_data.Invoke(new Action(() => dataGridView_data.Refresh()));
-            }
-            else
-            {
-                dataGridView_data.Refresh();
-            }
-        }
+     if (dataGridView_data.InvokeRequired)
+     {
+         dataGridView_data.Invoke(new Action(() => dataGridView_data.Refresh()));
+     }
+     else
+     {
+         dataGridView_data.Refresh();
+     }
+ }
 
 
         //buton normalizare
@@ -279,7 +271,7 @@ namespace DDoS_IDS
 
 
             //numar FIX de neuroni INPUT 
-            network = new Neural_Network(6, hidden_Layer_Neurons, Sigmod_TanH, learning_Rate)
+            network = new Neural_Network(10, hidden_Layer_Neurons, Sigmod_TanH, learning_Rate)
             {
                 max_epochs = max_Epochs,
                 max_error = max_Error
@@ -572,7 +564,7 @@ namespace DDoS_IDS
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                network.Save_Model(saveFileDialog.FileName);
+                network.Save_Model(saveFileDialog.FileName, norm_Min_Max_values);
                 MessageBox.Show("Succes!");
             }
         }
@@ -591,7 +583,11 @@ namespace DDoS_IDS
                 try
                 {
                     Initialize_Network();
-                    network.Load_Model(openFileDialog.FileName);
+
+                   if (network.Load_Model("model.txt", out var loadedMinMax))
+                    {
+                        norm_Min_Max_values = loadedMinMax;
+                    } 
                 }
                 catch (Exception ex)
                 {
@@ -622,6 +618,29 @@ namespace DDoS_IDS
 
             return data_blocks;
         }
+
+
+        public List<double[]> Segment_Data_Real_Test(int block_Size)
+        {
+            List<double[]> data_blocks_real = new List<double[]>();
+
+            for (int i = 0; i < real_test_Results.Count; i += block_Size)
+        {
+        int current_block_size = Math.Min(block_Size, real_test_Results.Count - i);
+        double[] block = new double[current_block_size];
+
+        for (int j = 0; j < current_block_size; j++)
+        {
+            int predicted_Label = real_test_Results[i + j] >= (radioButton_sigmoid.Checked ? 0.5 : 0.0) ? 1 : 0;
+            block[j] = predicted_Label;
+        }
+
+        data_blocks_real.Add(block);
+        }
+
+        return data_blocks_real;
+        }
+
 
         //functie de analiza a anomaliilor din datele testate / spike detection
 private void Spike_Analysis(int block_Size, double spike_Threshold, int consecutive_Spike_Limit, double spike_ratio_Threshold = 0.5)
@@ -849,6 +868,9 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
                         // predict (forward prop., labels)
                         Testing_for_Real_Data(dataSet_real_test, dt_real);
 
+                        // spike analysis pt date reale
+                        Spike_Analysis_Real_Data(25, 0.5, 10, 0.5);
+
                         // salvare rezultate in tabela excel
                         Save_real_DataTable_to_Excel(dt_real, filePath.Replace(".xlsx", "_classified.xlsx"));
 
@@ -861,6 +883,101 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
+
+
+        private void Spike_Analysis_Real_Data(int block_Size, double spike_Threshold, int consecutive_Spike_Limit, double spike_ratio_Threshold = 0.5)
+    {
+
+    // verificare date de intrare
+    var data_Blocks = Segment_Data_Real_Test(block_Size);
+    int total_Blocks = data_Blocks.Count;
+    int spike_Blocks = 0;
+    int consecutive_Spikes = 0;
+    bool sustained_Attack_Detected = false;
+
+    // timestamp pentru logging
+    string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+    string log_FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"Real_Spike_Detection_Log_{timestamp}.txt");
+
+    using (StreamWriter log = new StreamWriter(log_FilePath))
+    {
+        log.WriteLine($"[Real Spike Detection Log - {DateTime.Now}]");
+        log.WriteLine($"Block size: {block_Size} \n Spike threshold: {spike_Threshold} \n Consecutive limit: {consecutive_Spike_Limit} \n Overall ratio threshold: {spike_ratio_Threshold}");
+        log.WriteLine("------------------------------------------------------");
+
+        // analiza blocurilor de date
+        for (int i = 0; i < total_Blocks; i++)
+        {
+            double[] block = data_Blocks[i];
+            int ddos_Count = block.Count(label => label == 1);
+            double ddos_Ratio = (double)ddos_Count / block_Size;
+
+            string status;
+            if (ddos_Ratio > spike_Threshold)
+            {
+                spike_Blocks++;
+
+                consecutive_Spikes++;
+
+                status = $"Spike ⚠️ - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                if (consecutive_Spikes >= consecutive_Spike_Limit)
+                {
+                    sustained_Attack_Detected = true;
+                    log.WriteLine($"[Block {i + 1}] {status} → Sustained Attack Detected! (Consecutive spikes = {consecutive_Spikes})");
+
+                    break;
+                }
+            }
+            else
+            {
+                status = $"Normal - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                consecutive_Spikes = 0;
+            }
+
+            log.WriteLine($"[Block {i + 1}] {status}");
+        }
+
+        double spike_Ratio = (double)spike_Blocks / total_Blocks;
+        double severity_Score = spike_Ratio * 100;   //procent pentru severitatea testului
+
+        //caracteristici de logging
+        log.WriteLine("------------------------------------------------------");
+        log.WriteLine($"Total Blocks: {total_Blocks}");
+        log.WriteLine($"Spike Blocks: {spike_Blocks}");
+        log.WriteLine($"Spike Ratio: {spike_Ratio:F2}");
+        log.WriteLine($"Severity Score: {severity_Score:F1}/100");
+
+        if (!sustained_Attack_Detected && spike_Ratio >= spike_ratio_Threshold)
+        {
+            log.WriteLine("[RESULT] Frequent spikes detected across dataset. DDoS is highly probable.");
+
+            sustained_Attack_Detected = true;
+        }
+        else if (!sustained_Attack_Detected && spike_Blocks > 0)
+        {
+            log.WriteLine("[RESULT] Some spikes detected, but not frequent or sustained enough.");
+        }
+        else if (spike_Blocks == 0)
+        {
+            log.WriteLine("[RESULT] No spikes detected.");
+        }
+    }
+
+    // feedback in UI
+    if (sustained_Attack_Detected)
+    {
+        MessageBox.Show("DDoS attack detected! See detailed analysis in log file.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+    else if (spike_Blocks > 0)
+    {
+        MessageBox.Show("Some anomalies detected. DDoS not confirmed. See log for details.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+    else
+    {
+        MessageBox.Show("No anomalies or spikes detected.", "Spike Detection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+}
 
 
         //functia pentru incarcarea datelor reale
@@ -900,71 +1017,65 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
 
 
         //functia de normalizare a datelor reale 
-        private void Data_Normalization_for_Real_Testing()
-        {
-            int rows = dataSet_real_test.GetLength(0);
-            int cols = dataSet_real_test.GetLength(1);
+    private void Data_Normalization_for_Real_Testing()
+     {
+      if (norm_Min_Max_values == null || norm_Min_Max_values.Count == 0)
+      {
+          MessageBox.Show("Min-Max normalization values are missing. Train or load a model first.");
+          return;
+      }
 
-            Dictionary<int, (double min, double max)> minMaxValues = new Dictionary<int, (double min, double max)>();
+      int rows = dataSet_real_test.GetLength(0);
+      int cols = dataSet_real_test.GetLength(1);
 
-            for (int col = 0; col < cols; col++)
-            {
-                double min = double.MaxValue;
-                double max = double.MinValue;
+      for (int row = 0; row < rows; row++)
+      {
+          for (int col = 0; col < cols; col++)
+          {
+              if (!norm_Min_Max_values.ContainsKey(col)) continue;
 
-                for (int row = 0; row < rows; row++)
-                {
-                    double value = dataSet_real_test[row, col];
-                    if (value < min) min = value;
-                    if (value > max) max = value;
-                }
+              double value = dataSet_real_test[row, col];
+              double min = norm_Min_Max_values[col].min;
+              double max = norm_Min_Max_values[col].max;
 
-                minMaxValues[col] = (min, max);
-            }
+              if (max != min)
+              {
+                  double normalized_Value = radioButton_sigmoid.Checked
+                      ? (value - min) / (max - min)
+                      : 2 * ((value - min) / (max - min)) - 1;
 
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    double value = dataSet_real_test[row, col];
-                    double min = minMaxValues[col].min;
-                    double max = minMaxValues[col].max;
-
-                    if (max != min)
-                    {
-                        double normalizedValue;
-                        if (radioButton_sigmoid.Checked)
-                        {
-                            normalizedValue = (value - min) / (max - min);
-                        }
-                        else
-                        {
-                            normalizedValue = 2 * ((value - min) / (max - min)) - 1;
-                        }
-                        dataSet_real_test[row, col] = normalizedValue;
-                    }
-                }
-            }
-        }
+                  dataSet_real_test[row, col] = normalized_Value;
+              }
+          }
+      }
+  }
 
         //functia de testare, forward propagation, a datelor reale
-        private void Testing_for_Real_Data(double[,] dataSet, DataTable dataTable)
-        {
-            int row_Count = dataSet.GetLength(0);
-            for (int row = 0; row < row_Count; row++)
-            {
-                double[] input_Row = new double[dataSet.GetLength(1)];
-                for (int col = 0; col < dataSet.GetLength(1); col++)
-                {
-                    input_Row[col] = dataSet[row, col];
-                }
+    private void Testing_for_Real_Data(double[,] dataSet, DataTable dataTable)
+ {
+     // coloana Prediction trebuie sa existe in dataTable
+     if (!dataTable.Columns.Contains("Prediction"))
+         dataTable.Columns.Add("Prediction", typeof(int));
 
-                double prediction = network.Forward_Propagation(input_Row, radioButton_sigmoid.Checked);
-                int predicted_Label = prediction >= 0.5 ? 1 : 0;
+     real_test_Results.Clear();
+     double threshold = radioButton_sigmoid.Checked ? 0.5 : 0.0;
 
-                dataTable.Rows[row]["Prediction"] = predicted_Label;     // 1 sau 0
-            }
-        }
+     int row_Count = dataSet.GetLength(0);
+     for (int row = 0; row < row_Count; row++)
+     {
+         double[] input_Row = new double[dataSet.GetLength(1)];
+         for (int col = 0; col < dataSet.GetLength(1); col++)
+         {
+             input_Row[col] = dataSet[row, col];
+         }
+
+         double prediction = network.Forward_Propagation(input_Row, radioButton_sigmoid.Checked);
+         int predicted_Label = prediction >= threshold ? 1 : 0;
+         real_test_Results.Add(prediction); //spike analysis
+
+         dataTable.Rows[row]["Prediction"] = predicted_Label;
+     }
+ }
 
 
         //functia de salvare a datelor obtinute in urma testarii datelor reale
