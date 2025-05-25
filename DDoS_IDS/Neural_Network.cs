@@ -169,7 +169,7 @@ namespace DDoS_IDS
 
 
         //functia de salvare a modelului (tarii sinaptice)
-        public void Save_Model(string filePath)
+        public void Save_Model(string filePath, Dictionary<int, (double min, double max)> norm_Min_Max_values)
         {
             using (StreamWriter writer = new StreamWriter(filePath))
             {
@@ -189,43 +189,65 @@ namespace DDoS_IDS
                 {
                     writer.WriteLine(weight);
                 }
+
+                  // salvare valorile minime si maxime pentru normalizare
+                  writer.WriteLine("MINMAX");
+                  foreach (var kvp in norm_Min_Max_values)
+                  {
+                      writer.WriteLine($"{kvp.Key},{kvp.Value.min},{kvp.Value.max}");
+                  }
             }
         }
 
 
         //functie incarcare model (tarii) ATENTIE: trebuie sa avem acelasi numar de straturi
-        public bool Load_Model(string filePath)
-        {
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                int input_Neuron_Count = int.Parse(reader.ReadLine());
-                int hidden_Neuron_Count = int.Parse(reader.ReadLine());
-                //int output_Weight_Count = int.Parse(reader.ReadLine());
+    public bool Load_Model(string filePath, out Dictionary<int, (double min, double max)> norm_Min_Max_values)
+     {
+     norm_Min_Max_values = new Dictionary<int, (double min, double max)>();
 
-                if (input_layer.Length != input_Neuron_Count || hidden_layer.Length != hidden_Neuron_Count)
-                {
-                    MessageBox.Show($"Error! Expected hidden neurons: {hidden_layer.Length} | but found: {hidden_Neuron_Count}");
-                    return false;
-                }
+     using (StreamReader reader = new StreamReader(filePath))
+     {
+         int input_Neuron_Count = int.Parse(reader.ReadLine());
+         int hidden_Neuron_Count = int.Parse(reader.ReadLine());
+         int output_Weight_Count = int.Parse(reader.ReadLine());
 
-                foreach (var neuron in hidden_layer)
-                {
-                    for (int i = 0; i < neuron.Weights.Length; i++)
-                    {
-                        neuron.Weights[i] = double.Parse(reader.ReadLine());
-                    }
-                }
+         if (Input_Layer.Length != input_Neuron_Count || Hidden_Layer.Length != hidden_Neuron_Count)
+         {
+             MessageBox.Show($"Error! Expected hidden neurons: {Hidden_Layer.Length} | found: {hidden_Neuron_Count}");
+             return false;
+         }
 
-                for (int i = 0; i < output_layer.Weights.Length; i++)
-                {
-                    output_layer.Weights[i] = double.Parse(reader.ReadLine());
-                }
-            }
+         foreach (var neuron in Hidden_Layer)
+         {
+             for (int i = 0; i < neuron.Weights.Length; i++)
+             {
+                 neuron.Weights[i] = double.Parse(reader.ReadLine());
+             }
+         }
 
-            MessageBox.Show("Succes!");
-            return true;
+         for (int i = 0; i < Output_Layer.Weights.Length; i++)
+         {
+             Output_Layer.Weights[i] = double.Parse(reader.ReadLine());
+         }
 
-        }
+         string line = reader.ReadLine();
+         if (line == "MINMAX")
+         {
+             while (!reader.EndOfStream)
+             {
+                 string[] parts = reader.ReadLine().Split(',');
+                 int col = int.Parse(parts[0]);
+                 double min = double.Parse(parts[1]);
+                 double max = double.Parse(parts[2]);
+
+                 norm_Min_Max_values[col] = (min, max);
+             }
+         }
+     }
+
+     MessageBox.Show("Model loaded successfully.");
+     return true;
+ }
 
 
     }
