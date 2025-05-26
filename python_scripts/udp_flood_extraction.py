@@ -20,7 +20,9 @@ def extract_features_from_pcap(pcap_file):
                 udp_layer = packet[UDP]
                 src_port = udp_layer.sport
                 dst_port = udp_layer.dport
-                is_malign = 1  # malign
+                                # dns, ntp, ssdp
+                if dst_port in [53, 123, 1900]:
+                    is_malign = 1  # malign
 
           # restul de pachete TCP
             elif packet.haslayer(TCP):
