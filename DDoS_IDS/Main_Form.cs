@@ -678,7 +678,7 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
 
                 consecutive_Spikes++;
 
-                status = $"Spike ⚠️ - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                status = $"Spike - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
                 if (consecutive_Spikes >= consecutive_Spike_Limit)
                 {
                     sustained_Attack_Detected = true;
@@ -739,109 +739,122 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
       
 
         //functia de testare retea neuronala, dupa antrenare
-        private void Test_Data()
-        {
-            try
-            {
-                Thread th = new Thread(() =>
-                {
-                    if (dataSet_test == null || dataSet_test.Length == 0)
-                    {
-                        MessageBox.Show("Please load a dataset and train the network before testing.");
-                        return;
-                    }
+         private void Test_Data()
+ {
+     try
+     {
+         Thread th = new Thread(() =>
+         {
+             if (dataSet_test == null || dataSet_test.Length == 0)
+             {
+                 MessageBox.Show("Please load a dataset and train the network before testing.");
+                 return;
+             }
 
-                    Data_Normalization_Test();
+             Data_Normalization_Test();
 
-                    test_Results.Clear();
-                    List<int> actual_Labels = new List<int>();
-                    List<int> predicted_Labels = new List<int>();
+             test_Results.Clear();
+             List<int> actual_Labels = new List<int>();
+             List<int> predicted_Labels = new List<int>();
 
-                    int false_Positives = 0;
-                    int false_Negatives = 0;
-                    int correct_Predictions = 0;
+             int false_Positives = 0;
+             int false_Negatives = 0;
+             int true_Positives = 0;
+             int true_Negatives = 0;
 
-                    double threshold = radioButton_sigmoid.Checked ? 0.5 : 0.0;
-                    int test_offset_row = dataGridView_data.Rows.Count - dataSet_test.GetLength(0);
+             int correct_Predictions = 0;
 
-                    for (int i = 0; i < dataSet_test.GetLength(0); i++)
-                    {
-                        double[] test_Input = new double[dataSet_test.GetLength(1) - 1];
-                        for (int j = 0; j < dataSet_test.GetLength(1) - 1; j++)
-                        {
-                            test_Input[j] = dataSet_test[i, j];
-                        }
+             double threshold = radioButton_sigmoid.Checked ? 0.5 : 0.0;
+             int test_offset_row = dataGridView_data.Rows.Count - dataSet_test.GetLength(0);
 
-                        double actual_Label = dataSet_test[i, dataSet_test.GetLength(1) - 1];
-                        double prediction = network.Forward_Propagation(test_Input, radioButton_sigmoid.Checked);
-                        test_Results.Add(prediction);
+             test_Results.Clear();
+             actual_Labels.Clear();
+             predicted_Labels.Clear();
 
-                        int predicted_Label = prediction >= threshold ? 1 : 0;
+             for (int i = 0; i < dataSet_test.GetLength(0); i++)
+             {
+                 double[] test_Input = new double[dataSet_test.GetLength(1) - 1];
+                 for (int j = 0; j < dataSet_test.GetLength(1) - 1; j++)
+                 {
+                     test_Input[j] = dataSet_test[i, j];
+                 }
 
-                        // stocare label actual si cel prezis
-                        actual_Labels.Add((int)actual_Label);
-                        predicted_Labels.Add(predicted_Label);
+                 double actual_Label = dataSet_test[i, dataSet_test.GetLength(1) - 1];
+                 double prediction = network.Forward_Propagation(test_Input, radioButton_sigmoid.Checked);
 
-                        if (predicted_Label == 1 && actual_Label == 0)
-                        {
-                            false_Positives++;
-                            dataGridView_data.Rows[test_offset_row + i].DefaultCellStyle.BackColor = Color.OrangeRed;
-                        }
-                        else if (predicted_Label == 0 && actual_Label == 1)
-                        {
-                            false_Negatives++;
-                            dataGridView_data.Rows[test_offset_row + i].DefaultCellStyle.BackColor = Color.DarkBlue;
-                        }
-                        else
-                        {
-                            correct_Predictions++;
-                        }
-                    }
+                 test_Results.Add(prediction);
 
-                    int total_Predictions = dataSet_test.GetLength(0);
-                    double accuracy = (double)correct_Predictions / total_Predictions * 100;
+                 int predicted_Label = prediction >= threshold ? 1 : 0;
+
+                 actual_Labels.Add((int)actual_Label);
+                 predicted_Labels.Add(predicted_Label);
+
+                 if (predicted_Label == 1 && actual_Label == 1)
+                 {
+                     true_Positives++;
+                     correct_Predictions++;
+                 }
+                 else if (predicted_Label == 0 && actual_Label == 0)
+                 {
+                     true_Negatives++;
+                     correct_Predictions++;
+                 }
+                 else if (predicted_Label == 1 && actual_Label == 0)
+                 {
+                     false_Positives++;
+                     dataGridView_data.Rows[test_offset_row + i].DefaultCellStyle.BackColor = Color.OrangeRed;
+                 }
+                 else if (predicted_Label == 0 && actual_Label == 1)
+                 {
+                     false_Negatives++;
+                     dataGridView_data.Rows[test_offset_row + i].DefaultCellStyle.BackColor = Color.DarkBlue;
+                 }
+             }
+
+             int total_Predictions = dataSet_test.GetLength(0);
+
+             double accuracy = (double)correct_Predictions / total_Predictions * 100;
+
+             double precision = true_Positives + false_Positives > 0 ? (double)true_Positives / (true_Positives + false_Positives) : 0;
+
+             double recall = true_Positives + false_Negatives > 0 ? (double)true_Positives / (true_Positives + false_Negatives) : 0;
+
+             double f1 = precision + recall > 0 ? 2 * (precision * recall) / (precision + recall) : 0;
 
 
-                      // setari pentru detectie spike, atac continuu, anomalii
-                     int block_Size = 25;
-                     double spike_Threshold = 0.2;
-                     int consecutive_Spike_Limit = 5;
+             // setari pentru detectie spike, atac continuu, anomalii
+             int block_Size = 25;
+             double spike_Threshold = 0.5;
+             int consecutive_Spike_Limit = 5;
 
-                     Spike_Analysis(block_Size, spike_Threshold, consecutive_Spike_Limit, 0.5);
+             Spike_Analysis(block_Size, spike_Threshold, consecutive_Spike_Limit, 0.5);
 
-                    dataGridView_data.Refresh();
+             dataGridView_data.Refresh();
+             
+             MessageBox.Show(
+                 $"Testing complete:\n" +
+                 $"False Positives: {false_Positives}\n" +
+                 $"False Negatives: {false_Negatives}\n" +
+                 $"Accuracy: {accuracy:F2}%\n" +
+                 $"Precision: {precision:P2}\n" +
+                 $"Recall: {recall:P2}\n" +
+                 $"F1 Score: {f1:P2}",
+                 "Evaluation Results",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Information);
 
-                    MessageBox.Show($"Testing complete:\nFalse Positives: {false_Positives}\nFalse Negatives: {false_Negatives}\nAccuracy: {accuracy:F2}%");
-                    int true_Positives = 0;
-                    int true_Negatives = 0;
+             Plot_Testing(); //afisare predictii in grafic
+             Plot_Confusion_Matrix(true_Positives, true_Negatives, false_Positives, false_Negatives); //afisare matrice de confuzie
 
-                    for (int i = 0; i < dataSet_test.GetLength(0); i++)
-                    {
-                        double actual_Label = dataSet_test[i, dataSet_test.GetLength(1) - 1];
-                        int predicted_Label = test_Results[i] >= threshold ? 1 : 0;
-
-                        if (predicted_Label == 1 && actual_Label == 1)
-                        {
-                            true_Positives++;
-                        }
-                        else if (predicted_Label == 0 && actual_Label == 0)
-                        {
-                            true_Negatives++;
-                        }
-                    }
-
-                    Plot_Testing();
-                    Plot_Confusion_Matrix(true_Positives, true_Negatives, false_Positives, false_Negatives);
-
-                })
-                { IsBackground = true };
-                th.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+         })
+         { IsBackground = true };
+         th.Start();
+     }
+     catch (Exception ex)
+     {
+         MessageBox.Show(ex.Message);
+     }
+ }
 
 
         // urmatoarele functii sunt destinate exclusiv testarii datelor reale, fara 'label'
@@ -920,7 +933,7 @@ private void Spike_Analysis(int block_Size, double spike_Threshold, int consecut
 
                 consecutive_Spikes++;
 
-                status = $"Spike ⚠️ - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
+                status = $"Spike - {ddos_Count}/{block_Size} = {ddos_Ratio:F2}";
                 if (consecutive_Spikes >= consecutive_Spike_Limit)
                 {
                     sustained_Attack_Detected = true;
