@@ -209,75 +209,169 @@ Parametrii:
  - rata învățare: 0,005
  - eroare maximă: 0,001
 
-Blocuri de câte 50 pachete:
-1. tcp-syn: 36.63 % din pachete sunt maligne
-- sigmoid: 99.73%
-- tanH: 94.25% cu rata: 0,0000005 si eroarea: 0,000001
+blocuri de cate 50 pachete
 
-2. imcp: 25.30% din pachete sunt maligne
-- sigmoid: 86.37%
-- tanH: 92.31%
+-tcp: 36.63 % pachete maligne		
+	sigmoid: 
+		accuracy: 92.34%
+		precision: 95.15%
+		recall: 68.14%
+		f1 score: 79.41%
+	tanH: 
+		accuracy: 98.36%
+		precision: 97.60%
+		recall: 91.38%
+		f1 score: 94.38%
 
-3. udp: 53.32% din pachete sunt maligne
-- sigmoid: 99.59%
-- tanH: 99.80%
+-imcp: 25.30% pachete maligne
+	sigmoid: 
+		accuracy: 86.71%
+		precision: 61.29%
+		recall: 54.07%
+		f1 score: 57.45%
+	tanH: 
+		accuracy: 92.71%
+		precision: 96.52%
+		recall: 55.65%
+		f1 score: 71.50%
 
+-udp: 53.32% pachete maligne
+	sigmoid: 
+		accuracy: 99.12%
+		precision: 99.12%
+		recall: 96.20%
+		f1 score: 97.70%
+	tanH: 
+		accuracy:  98.87%
+		precision: 98.37%
+		recall: 95.30%
+		f1 score: 96.80%
 
-Trafic uniform:
-1. tcp-syn: 37.45% din pachete sunt maligne
-- sigmoid: 99.66%
-- tanH: 92.65% cu rata 0,0000005 si eroarea: 0,0000001
+trafic uniform
 
-2. icmp: 24.82% dn pachete sunt maligne
-- sigmoid: 86.20%
-- tanH: 95.42%
+-tcp: 37.45% pachete maligne
+	sigmoid: 
+		accuracy: 98.21%
+		precision: 98.16%
+		recall: 92.70%
+		f1 score: 95.35%
+	tanH: 
+		accuracy: 92.65%
+		precision: 90.24%
+		recall: 89.59%
+		f1 score: 89.86%
+		
+-icmp: 24.82% pachete maligne
+	sigmoid: 
+		accuracy: 86.26%
+		precision: 74.19%
+		recall: 68.56%
+		f1 score: 71.27%
+	tanH: 
+		accuracy: 95.42%
+		precision: 94.90%
+		recall: 71.00%
+		f1 score: 81.50%
 
-3. udp: 52.83% din pachete sunt maligne
-- sigmoid: 98.65%
-- tanH: 99.46%
+-udp: 52.83% pachete maligne
+	sigmoid: 
+		accuracy: 98.65%
+		precision: 99.37%
+		recall: 98.13%
+		f1 score: 98.75%
+	tanH: 
+		accuracy: 99.46%
+		precision: 98.95%
+		recall: 97.26%
+		f1 score: 98.10%
 
 
 NO IP & MAC
 
-Parametrii: 
-- 10 neuroni pe stratul ascuns
-- 200 epoci
-- rata învățare: 0,005
-- eroare maximă: 0,001
+blocuri de cate 50 pachete
 
-Blocuri de câte 50 pachete
-1. tcp-syn: 36.63 % din pachete sunt maligne		
-- sigmoid: 99.73%
-- tanH: 99.86% cu rata: 0,000005 si eroarea: 0,000001
+-tcp: 36.63 % pachete maligne		
+	sigmoid: 
+		accuracy: 99.73%
+		precision: 99.26%
+		recall: 99.64%
+		f1 score: 99.45%
+	tanH: 
+		accuracy: 98.86%
+		precision: 98.40%
+		recall: 96.10%
+		f1 score: 97.24%
+		
+-imcp: 25.30% pachete maligne
+	sigmoid: 
+		accuracy: 73.68%
+		precision: 65.20% 
+		recall: 78.12%
+		f1 score: 71.00%
+	tanH: 	
+		accuracy: 62.50%
+		precision: 71.09%
+		recall: 59.63%
+		f1 score: 64.81%
 
-2. imcp: 25.30% din pachete sunt maligne
-- sigmoid: 73.68%
-- tanH: 89.07%
-
-3. udp: 53.32% din pachete sunt maligne
-- sigmoid: 79.14%
-- tanH: 98.85%
-
-
-Trafic uniform
-1. tcp-syn: 37.45% din pachete sunt maligne
-- sigmoid: 99.66%
-- tanH: 90.38% cu rata: 0,0000005 si eroarea: 0,0000001
-
-2. icmp: 24.82% din pachete sunt maligne
-- sigmoid: 75.08% 
-- tanH: 95.49%
-
-3. udp: 52.83% din pachete sunt maligne
-- sigmoid: 80.00%
-- tanH: 97.98%
+-udp: 53.32% pachete maligne
+	sigmoid: 
+		accuracy: 79.14%
+		precision: 71.29%
+		recall: 99.61%
+		f1 score: 83.11%
+	tanH: 
+		accuracy: 98.85%
+		precision: 99.67%
+		recall: 99.34%
+		f1 score: 99.50%
 
 
-În general, am obținut rezultate satisfăcătoare, având în vedere arhitectura simplă a rețelei, dar și structura datelor.
-Observăm și câteva probleme:
--  în cazul funcției TanH, pentru detecția SYN Flood, avem nevoie de parametrii foarte mici
--  în unele configurații, am obținut acuratețe de 100.00%, dar testarea nu avea rezultatele așteptate
--  în unele cazuri, la testarea reală, am obținut doar label-uri de 1 -> overfitting
+trafic uniform
+
+-tcp: 37.45% pachete maligne
+	sigmoid: 
+		accuracy: 99.66%
+		precision: 99.11%
+		recall: 99.89%
+		f1 score: 99.55%
+	tanH: 
+		accuracy: 90.38%
+		precision: 88.50%
+		recall: 85.00%
+		f1 score: 86.72%
+
+-icmp: 24.82% pachete maligne
+	sigmoid: 
+		accuracy: 75.15%
+		precision: 73.42%
+		recall: 69.81%
+		f1 score: 71.57%
+	tanH: 
+		accuracy: 93.80%
+		precision: 99.00%
+		recall: 84.82%
+		f1 score: 91.38%
+
+-udp: 52.83% pachete maligne
+	sigmoid: 
+		accuracy: 80.00%
+		precision: 73.24%
+		recall: 99.38%
+		f1 score: 84.33%
+	tanH: 
+		accuracy: 95.10%
+		precision: 96.63% 
+		recall: 91.54%
+		f1 score:  94.02%
+
+
+Funcția de activare Tanh tinde spre o performanță ușor mai bună față de Sigmoid, în majoritatea cazurilor, în special pentru Scorul F1 și Rechemare. Asta sugerează o sensibilitate mai mare la detectarea pachetelor maligne. Funcția Sigmoidă oferă totuși rezultate competitive și, uneori, are chiar o precizie mai mare, ceea ce înseamnă mai puține alarme false pozitive.
+Traficul UDP, care stă la baza UDP Flood pare a fi cel mai ușor de clasificat, având frecvent un Scor F1 de peste 95%. Asta în timp ce traficul ce conține protocolul ICMP este, în general, mai dificil de clasificat și detectat, având scoruri mai slabe fără adresele IP și MAC.
+
+În general, rețeaua are nevoie de toate datele (caracteristicile) disponibile pentru a învăța mai eficient și pentru a oferi metrici mai bune. Este posibil ca, având și mai multe date relevante la dispoziție, modelul să se comporte și mai bine. 
+
+UDP Flood este cel mai ușor de detectat cu ambele funcții de activare, chiar și fără adresele IP și MAC. ICMP Flood este cel mai dificil de identificat, mai ales fără informațiile de adresare. Traficul fără IP/MAC poate fi detectat cu succes în cazul protocoalelor TCP și UDP, dar rămâne o provocare pentru ICMP. Rețeaua implementată funcționează optim în cazul TCP și UDP, mai ales în configurațiile de trafic uniform.
 
 ---
 
