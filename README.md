@@ -155,7 +155,7 @@ Atenționare, afișată după procesul de testare.
 ![screenshot5](images/atentionare.png)
 
 Rezultatele testării.
-![screenshot6](images/rezultate-test.png)
+![screenshot6](images/rezultate_test.png)
 
 Vizualizare rezultate testare.
 ![screenshot7](images/date-test.png)
