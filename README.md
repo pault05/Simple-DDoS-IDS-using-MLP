@@ -166,12 +166,8 @@ Vizualizare rezultate, atac pe blocuri / spikes.
 Cum arată fișierul cu modelul salvat (nr. neuroni intrare, strat ascuns, strat ascuns->ieșire).
 ![screenshot8](images/model-salvat.png)
 
-Spikes
-![screenshot9](images/spikes.png)
-
-Consecutive Spikes
-![screenshot10](images/consecutive-spikes.png)
-
+Spikes / logging (modulul de detectie)
+![screenshot9](images/logging.png)
 
 ---
 
