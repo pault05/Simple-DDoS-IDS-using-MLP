@@ -200,16 +200,182 @@ Rezultatele sunt împărțite după:
 
 Toate fișierele au conținut aproximativ 5000 de pachete.
 
-
-TOATE COLOANELE / DATELE
-
 Parametrii: 
  - 15 neuroni pe stratul ascuns
  - 300 epoci
  - rata învățare: 0,005
  - eroare maximă: 0,001
 
-<pre lang="md"> ```markdown ## Rezultate - Evaluare Model ### Blocuri de câte 50 pachete #### TCP (36.63% pachete maligne) - **Sigmoid** - `Accuracy`: 92.34% - `Precision`: 95.15% - `Recall`: 68.14% - `F1 Score`: 79.41% - **tanH** - `Accuracy`: 98.36% - `Precision`: 97.60% - `Recall`: 91.38% - `F1 Score`: 94.38% #### ICMP (25.30% pachete maligne) - **Sigmoid** - `Accuracy`: 86.71% - `Precision`: 61.29% - `Recall`: 54.07% - `F1 Score`: 57.45% - **tanH** - `Accuracy`: 92.71% - `Precision`: 96.52% - `Recall`: 55.65% - `F1 Score`: 71.50% #### UDP (53.32% pachete maligne) - **Sigmoid** - `Accuracy`: 99.12% - `Precision`: 99.12% - `Recall`: 96.20% - `F1 Score`: 97.70% - **tanH** - `Accuracy`: 98.87% - `Precision`: 98.37% - `Recall`: 95.30% - `F1 Score`: 96.80% --- ### Trafic Uniform #### TCP (37.45% pachete maligne) - **Sigmoid** - `Accuracy`: 98.21% - `Precision`: 98.16% - `Recall`: 92.70% - `F1 Score`: 95.35% - **tanH** - `Accuracy`: 92.65% - `Precision`: 90.24% - `Recall`: 89.59% - `F1 Score`: 89.86% #### ICMP (24.82% pachete maligne) - **Sigmoid** - `Accuracy`: 86.26% - `Precision`: 74.19% - `Recall`: 68.56% - `F1 Score`: 71.27% - **tanH** - `Accuracy`: 95.42% - `Precision`: 94.90% - `Recall`: 71.00% - `F1 Score`: 81.50% #### UDP (52.83% pachete maligne) - **Sigmoid** - `Accuracy`: 98.65% - `Precision`: 99.37% - `Recall`: 98.13% - `F1 Score`: 98.75% - **tanH** - `Accuracy`: 99.46% - `Precision`: 98.95% - `Recall`: 97.26% - `F1 Score`: 98.10% --- ## NO IP & MAC ### Blocuri de câte 50 pachete #### TCP (36.63% pachete maligne) - **Sigmoid** - `Accuracy`: 99.73% - `Precision`: 99.26% - `Recall`: 99.64% - `F1 Score`: 99.45% - **tanH** - `Accuracy`: 98.86% - `Precision`: 98.40% - `Recall`: 96.10% - `F1 Score`: 97.24% #### ICMP (25.30% pachete maligne) - **Sigmoid** - `Accuracy`: 73.68% - `Precision`: 65.20% - `Recall`: 78.12% - `F1 Score`: 71.00% - **tanH** - `Accuracy`: 62.50% - `Precision`: 71.09% - `Recall`: 59.63% - `F1 Score`: 64.81% #### UDP (53.32% pachete maligne) - **Sigmoid** - `Accuracy`: 79.14% - `Precision`: 71.29% - `Recall`: 99.61% - `F1 Score`: 83.11% - **tanH** - `Accuracy`: 98.85% - `Precision`: 99.67% - `Recall`: 99.34% - `F1 Score`: 99.50% --- ### Trafic Uniform #### TCP (37.45% pachete maligne) - **Sigmoid** - `Accuracy`: 99.66% - `Precision`: 99.11% - `Recall`: 99.89% - `F1 Score`: 99.55% - **tanH** - `Accuracy`: 90.38% - `Precision`: 88.50% - `Recall`: 85.00% - `F1 Score`: 86.72% #### ICMP (24.82% pachete maligne) - **Sigmoid** - `Accuracy`: 75.15% - `Precision`: 73.42% - `Recall`: 69.81% - `F1 Score`: 71.57% - **tanH** - `Accuracy`: 93.80% - `Precision`: 99.00% - `Recall`: 84.82% - `F1 Score`: 91.38% #### UDP (52.83% pachete maligne) - **Sigmoid** - `Accuracy`: 80.00% - `Precision`: 73.24% - `Recall`: 99.38% - `F1 Score`: 84.33% - **tanH** - `Accuracy`: 95.10% - `Precision`: 96.63% - `Recall`: 91.54% - `F1 Score`: 94.02% ``` </pre>
+ TOATE CARACTERISTICILE
+
+ blocuri de cate 50 pachete
+
+- tcp: 36.63 % pachete maligne		
+	- sigmoid: 
+		accuracy: 92.34%
+		precision: 95.15%
+		recall: 68.14%
+		f1 score: 79.41%
+
+	- tanH: 
+		accuracy: 98.36%
+		precision: 97.60%
+		recall: 91.38%
+		f1 score: 94.38%
+
+- imcp: 25.30% pachete maligne
+	- sigmoid: 
+		accuracy: 86.71%
+		precision: 61.29%
+		recall: 54.07%
+		f1 score: 57.45%
+
+	- tanH: 
+		accuracy: 92.71%
+		precision: 96.52%
+		recall: 55.65%
+		f1 score: 71.50%
+
+- udp: 53.32% pachete maligne
+	- sigmoid: 
+		accuracy: 99.12%
+		precision: 99.12%
+		recall: 96.20%
+		f1 score: 97.70%
+
+	- tanH: 
+		accuracy:  98.87%
+		precision: 98.37%
+		recall: 95.30%
+		f1 score: 96.80%
+
+trafic uniform
+
+- tcp: 37.45% pachete maligne
+	- sigmoid: 
+		accuracy: 98.21%
+		precision: 98.16%
+		recall: 92.70%
+		f1 score: 95.35%
+
+	- tanH: 
+		accuracy: 92.65%
+		precision: 90.24%
+		recall: 89.59%
+		f1 score: 89.86%
+		
+- icmp: 24.82% pachete maligne
+	- sigmoid: 
+		accuracy: 86.26%
+		precision: 74.19%
+		recall: 68.56%
+		f1 score: 71.27%
+
+	- tanH: 
+		accuracy: 95.42%
+		precision: 94.90%
+		recall: 71.00%
+		f1 score: 81.50%
+
+- udp: 52.83% pachete maligne
+	- sigmoid: 
+		accuracy: 98.65%
+		precision: 99.37%
+		recall: 98.13%
+		f1 score: 98.75%
+
+	- tanH: 
+		accuracy: 99.46%
+		precision: 98.95%
+		recall: 97.26%
+		f1 score: 98.10%
+
+
+ NO IP & MAC
+
+blocuri de cate 50 pachete
+
+- tcp: 36.63 % pachete maligne		
+	- sigmoid: 
+		accuracy: 99.73%
+		precision: 99.26%
+		recall: 99.64%
+		f1 score: 99.45%
+
+	- tanH: 
+		accuracy: 98.86%
+		precision: 98.40%
+		recall: 96.10%
+		f1 score: 97.24%
+		
+- imcp: 25.30% pachete maligne
+	- sigmoid: 
+		accuracy: 73.68%
+		precision: 65.20% 
+		recall: 78.12%
+		f1 score: 71.00%
+
+	- tanH: 	
+		accuracy: 62.50%
+		precision: 71.09%
+		recall: 59.63%
+		f1 score: 64.81%
+
+- udp: 53.32% pachete maligne
+	- sigmoid: 
+		accuracy: 79.14%
+		precision: 71.29%
+		recall: 99.61%
+		f1 score: 83.11%
+
+	- tanH: 
+		accuracy: 98.85%
+		precision: 99.67%
+		recall: 99.34%
+		f1 score: 99.50%
+
+
+trafic uniform
+
+- tcp: 37.45% pachete maligne
+	- sigmoid: 
+		accuracy: 99.66%
+		precision: 99.11%
+		recall: 99.89%
+		f1 score: 99.55%
+
+	- tanH: 
+		accuracy: 90.38%
+		precision: 88.50%
+		recall: 85.00%
+		f1 score: 86.72%
+
+- icmp: 24.82% pachete maligne
+	- sigmoid: 
+		accuracy: 75.15%
+		precision: 73.42%
+		recall: 69.81%
+		f1 score: 71.57%
+
+	- tanH: 
+		accuracy: 93.80%
+		precision: 99.00%
+		recall: 84.82%
+		f1 score: 91.38%
+
+- udp: 52.83% pachete maligne
+	- sigmoid: 
+		accuracy: 80.00%
+		precision: 73.24%
+		recall: 99.38%
+		f1 score: 84.33%
+
+	- tanH: 
+		accuracy: 95.10%
+		precision: 96.63% 
+		recall: 91.54%
+		f1 score:  94.02%
+
 
 Funcția de activare Tanh tinde spre o performanță ușor mai bună față de Sigmoid, în majoritatea cazurilor, în special pentru Scorul F1 și Rechemare. Asta sugerează o sensibilitate mai mare la detectarea pachetelor maligne. Funcția Sigmoidă oferă totuși rezultate competitive și, uneori, are chiar o precizie mai mare, ceea ce înseamnă mai puține alarme false pozitive.
 Traficul UDP, care stă la baza UDP Flood pare a fi cel mai ușor de clasificat, având frecvent un Scor F1 de peste 95%. Asta în timp ce traficul ce conține protocolul ICMP este, în general, mai dificil de clasificat și detectat, având scoruri mai slabe fără adresele IP și MAC.
